@@ -1,0 +1,34 @@
+/* Code originally copied from Stephen's Portfolio at https://github.com/CloakOfClarity/StephensPortfolio */
+
+body	{
+		background-color: #CDCDCD;
+		color: black;
+		font: 11pt 'Open Sans', sans-serif;
+	}
+h1	{
+		font: bold 20pt Arial, sans serif;
+		text-align: center;
+		color: #4b4a4a;
+		border-bottom:dotted 1px #4b4a4a;
+		margin-bottom:30px;
+	}
+h2	{
+		font: bold 16pt Arial, sans serif;
+		text-align: center;
+		color: #1a1a1a;
+		border-bottom:solid 1px #e6e6e6;
+		margin-bottom:20px;
+	}
+footer	{
+		background: #32447d;
+		padding: 15px;
+		width: 100%;
+		color: #fff;
+		text-align: center;
+	}
+header li > a	{
+		color: #413f3f;
+		font-size: 13pt;
+		font-weight:400;
+		border-right: solid 1px #dedede;
+	}

@@ -8,13 +8,31 @@
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css">
 		<link rel="stylesheet" href="Style.css" type="text/css">
 		<script src="Questions.js"></script>
+		<script>
+			var question = 0; var mark = 0; var prevQuest = [];
+
+			function selectQuestion()
+			{
+				let qid = Math.floor(Math.random() * ql.length);
+				while(prevQuest.indexOf(qid)>=0)
+				{
+					qid = Math.floor(Math.random() * ql.length);
+				}
+				prevQuest.push(qid);
+				question += 1;
+				$("p>span").text(mark);
+				$("h2>span").text(question);
+				$("main>p").html(ql[qid].question.replace(/\|/g,"<br>"));
+
+			}
+		</script>
 	</head>
 
-	<body>
+	<body onload="selectQuestion()">
 		<div class="container">
 			<header>
 				<h1>Test the Tester</h1>
-				<p>Current Mark: <span>0%</span></p>
+				<p>Current Mark: <span>0</span>%</p>
 			</header>
 
 			<main>

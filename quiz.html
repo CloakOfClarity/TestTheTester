@@ -23,7 +23,23 @@
 				$("p>span").text(mark);
 				$("h2>span").text(question);
 				$("main>p").html(ql[qid].question.replace(/\|/g,"<br>"));
-
+				$("main>div").empty();
+				if(typeof ql[qid].correct=="number")
+				{
+					for (let i = 0; i < ql[qid].answers.length; i++)
+					{
+						$("main>div").append($("<div></div>").attr("class","radio"));
+						$("main>div>div:last").append($("<input/>").attr({"type":"radio","id":"answer"+i,"name":"answers","value":i,"class":"radio"}));
+						$("main>div>div:last").append($("<label></label>").attr("for","answer"+i).text(ql[qid].answers[i]));
+					}
+				} else {
+					for (let i = 0; i < ql[qid].answers.length; i++)
+					{
+						$("main>div").append($("<div></div>").attr("class","form-check"));
+						$("main>div>div:last").append($("<input/>").attr({"type":"checkbox","id":"answer"+i,"name":"answers","value":i,"class":"form-check-input"}));
+						$("main>div>div:last").append($("<label></label>").attr({"for":"answer"+i,"class":"form-check-label"}).text(ql[qid].answers[i]));
+					}
+				}
 			}
 		</script>
 	</head>

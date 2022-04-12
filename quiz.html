@@ -90,8 +90,37 @@
 							$("main>div").append($("<p></p>").html(sol));
 							mark+=subMark;
 						}
-						$("p>span").text((mark / question) * 100);
-						$("button").text("Next Question");
+						$("p>span").text(Math.floor((mark / question) * 100));
+						if(question<20)
+						{
+							$("button").text("Next Question");
+						} else {
+							$("button").text("View Results");
+						}
+					}
+				} else { nextQuestion(); }
+			}
+
+			function nextQuestion()
+			{
+				if(question<20)
+				{
+					$("button").text("Submit Answer");
+					selectQuestion();
+				} else {
+					question=21;
+					$("main").empty();
+					if(mark>=12)
+					{
+						$("main").append($("<p></p>").text("Congratulations! You passed the quiz! You scored "+Math.floor((mark/20)*100)+"%."));
+						if(mark<20) {
+							$("main").append($("<p></p>").html("Can you improve upon that score? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
+						} else {
+							$("main").append($("<p></p>").html("Can you repeat the feat? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
+						}
+					} else {
+						$("main").append($("<p></p>").text("Sorry, you didn't pass the quiz. You scored "+Math.floor((mark/20)*100)+"%."));
+						$("main").append($("<p></p>").html("Maybe you'll have better luck next time? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
 					}
 				}
 			}

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en-au">
 	<head>
 		<meta charset="utf-8">
@@ -9,18 +9,16 @@
 		<link rel="stylesheet" href="Style.css" type="text/css">
 		<script src="Questions.js"></script>
 		<script>
-			var question = 0; var mark = 0; var prevQuest = [];
+			var question = 0; var mark = 0; var qid = 0; var prevQuest = [];
 
 			function selectQuestion()
 			{
-				let qid = Math.floor(Math.random() * ql.length);
-				while(prevQuest.indexOf(qid)>=0)
+				do
 				{
 					qid = Math.floor(Math.random() * ql.length);
-				}
+				} while(prevQuest.indexOf(qid)>=0)
 				prevQuest.push(qid);
 				question += 1;
-				$("p>span").text(mark);
 				$("h2>span").text(question);
 				$("main>p").html(ql[qid].question.replace(/\|/g,"<br>"));
 				$("main>div").empty();
@@ -41,6 +39,62 @@
 					}
 				}
 			}
+
+			function checkResponse()
+			{
+				if($("button").text()=="Submit Answer")
+				{
+					if($(":checked").length>0)
+					{
+						if (typeof ql[qid].correct == "number")
+						{
+							let sel = $(":checked").val();
+							$("main>div").empty();
+							$("main>div").append($("<p></p>").html("You selected &#8216;"+ql[qid].answers[sel]+"&#8217;."));
+							if(sel==ql[qid].correct)
+							{
+								$("main>div").append($("<p></p>").text("Congratulations! You selected the correct answer."));
+								mark += 1;
+							} else {
+							$("main>div").append($("<p></p>").html("Sorry, you selected the incorrect answer. The correct answer was &#8216;"+ql[qid].answers[ql[qid].correct]+"&#8217;."));
+							}
+						} else {
+							let sol = ""; let subMark = 0;
+							for(let i=0;i<4;i++)
+							{
+								if($("input:eq("+i+")").prop("checked"))
+								{
+									if(ql[qid].correct.indexOf(i)>=0)
+									{
+										subMark+=0.25;
+										sol+="You selected &#8216;"+ql[qid].answers[i]+"&#8217;; this is correct.<br/>";
+									} else {
+										sol+="You selected &#8216;"+ql[qid].answers[i]+"&#8217;; this is incorrect.<br/>";
+									}
+								} else if(ql[qid].correct.indexOf(i)>=0) {
+									sol+="You did not select &#8216;"+ql[qid].answers[i]+"&#8217;; this is incorrect.<br/>";
+								} else {
+									subMark+=0.25;
+									sol+="You did not select &#8216;"+ql[qid].answers[i]+"&#8217;; this is correct.<br/>";
+								}
+							}
+							$("main>div").empty();
+							if(subMark==0)
+							{
+								$("main>div").append($("<p></p>").text("Sorry, you selected the incorrect answers."));
+							} else if(subMark==1) {
+								$("main>div").append($("<p></p>").text("Congratulations! You selected the correct answers."));
+							} else {
+								$("main>div").append($("<p></p>").text("The answers you selected are partially correct."));
+							}
+							$("main>div").append($("<p></p>").html(sol));
+							mark+=subMark;
+						}
+						$("p>span").text((mark / question) * 100);
+						$("button").text("Next Question");
+					}
+				}
+			}
 		</script>
 	</head>
 
@@ -52,10 +106,10 @@
 			</header>
 
 			<main>
-				<h2>Question <span>1</span> of 20</h2>
+				<h2>Question <span></span> of 20</h2>
 				<p></p><!-- Displays the question text -->
-				<div></div><!-- Displays the choices and feedback when the response is submitted -->
-				<button class="btn btn-primary btn-block">Submit Answer</button>
+				<div class="form-horizontal"></div><!-- Displays the choices and feedback when the response is submitted -->
+				<button class="btn btn-primary btn-block" onclick="checkResponse()">Submit Answer</button>
 			</main>
 
 			<footer>&copy; Stephen Hayes.</footer>

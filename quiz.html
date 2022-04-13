@@ -6,131 +6,25 @@
 		<title>Test the Tester</title>
 		<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" type="text/css">
-		<link rel="stylesheet" href="Style.css" type="text/css">
 		<script src="Questions.js"></script>
-		<script>
-			var question = 0; var mark = 0; var qid = 0; var prevQuest = [];
-
-			function selectQuestion()
-			{
-				do
-				{
-					qid = Math.floor(Math.random() * ql.length);
-				} while(prevQuest.indexOf(qid)>=0)
-				prevQuest.push(qid);
-				question += 1;
-				$("h2>span").text(question);
-				$("main>p").html(ql[qid].question.replace(/\|/g,"<br>"));
-				$("main>div").empty();
-				if(typeof ql[qid].correct=="number")
-				{
-					for (let i = 0; i < ql[qid].answers.length; i++)
-					{
-						$("main>div").append($("<div></div>").attr("class","radio"));
-						$("main>div>div:last").append($("<input/>").attr({"type":"radio","id":"answer"+i,"name":"answers","value":i,"class":"radio"}));
-						$("main>div>div:last").append($("<label></label>").attr("for","answer"+i).text(ql[qid].answers[i]));
-					}
-				} else {
-					for (let i = 0; i < ql[qid].answers.length; i++)
-					{
-						$("main>div").append($("<div></div>").attr("class","form-check"));
-						$("main>div>div:last").append($("<input/>").attr({"type":"checkbox","id":"answer"+i,"name":"answers","value":i,"class":"form-check-input"}));
-						$("main>div>div:last").append($("<label></label>").attr({"for":"answer"+i,"class":"form-check-label"}).text(ql[qid].answers[i]));
-					}
-				}
-			}
-
-			function checkResponse()
-			{
-				if($("button").text()=="Submit Answer")
-				{
-					if($(":checked").length>0)
-					{
-						if (typeof ql[qid].correct == "number")
-						{
-							let sel = $(":checked").val();
-							$("main>div").empty();
-							$("main>div").append($("<p></p>").html("You selected &#8216;"+ql[qid].answers[sel]+"&#8217;."));
-							if(sel==ql[qid].correct)
-							{
-								$("main>div").append($("<p></p>").text("Congratulations! You selected the correct answer."));
-								mark += 1;
-							} else {
-							$("main>div").append($("<p></p>").html("Sorry, you selected the incorrect answer. The correct answer was &#8216;"+ql[qid].answers[ql[qid].correct]+"&#8217;."));
-							}
-						} else {
-							let sol = ""; let subMark = 0;
-							for(let i=0;i<4;i++)
-							{
-								if($("input:eq("+i+")").prop("checked"))
-								{
-									if(ql[qid].correct.indexOf(i)>=0)
-									{
-										subMark+=0.25;
-										sol+="You selected &#8216;"+ql[qid].answers[i]+"&#8217;; this is correct.<br/>";
-									} else {
-										sol+="You selected &#8216;"+ql[qid].answers[i]+"&#8217;; this is incorrect.<br/>";
-									}
-								} else if(ql[qid].correct.indexOf(i)>=0) {
-									sol+="You did not select &#8216;"+ql[qid].answers[i]+"&#8217;; this is incorrect.<br/>";
-								} else {
-									subMark+=0.25;
-									sol+="You did not select &#8216;"+ql[qid].answers[i]+"&#8217;; this is correct.<br/>";
-								}
-							}
-							$("main>div").empty();
-							if(subMark==0)
-							{
-								$("main>div").append($("<p></p>").text("Sorry, you selected the incorrect answers."));
-							} else if(subMark==1) {
-								$("main>div").append($("<p></p>").text("Congratulations! You selected the correct answers."));
-							} else {
-								$("main>div").append($("<p></p>").text("The answers you selected are partially correct."));
-							}
-							$("main>div").append($("<p></p>").html(sol));
-							mark+=subMark;
-						}
-						$("p>span").text(Math.floor((mark / question) * 100));
-						if(question<20)
-						{
-							$("button").text("Next Question");
-						} else {
-							$("button").text("View Results");
-						}
-					}
-				} else { nextQuestion(); }
-			}
-
-			function nextQuestion()
-			{
-				if(question<20)
-				{
-					$("button").text("Submit Answer");
-					selectQuestion();
-				} else {
-					question=21;
-					$("main").empty();
-					if(mark>=12)
-					{
-						$("main").append($("<p></p>").text("Congratulations! You passed the quiz! You scored "+Math.floor((mark/20)*100)+"%."));
-						if(mark<20) {
-							$("main").append($("<p></p>").html("Can you improve upon that score? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
-						} else {
-							$("main").append($("<p></p>").html("Can you repeat the feat? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
-						}
-					} else {
-						$("main").append($("<p></p>").text("Sorry, you didn't pass the quiz. You scored "+Math.floor((mark/20)*100)+"%."));
-						$("main").append($("<p></p>").html("Maybe you'll have better luck next time? Why not find out by <a href=\"quiz.html\">retaking the quiz</a>."));
-					}
-				}
-			}
-		</script>
+		<script src="Quiz.js"></script>
+		<link rel="stylesheet" href="Style.css" type="text/css">
 	</head>
 
 	<body onload="selectQuestion()">
 		<div class="container">
 			<header>
 				<h1>Test the Tester</h1>
+				<nav class="navbar">
+					<ul class="nav navbar-nav">
+						<li class="nav-item">
+							<a class="nav-link" accesskey="h" href="index.html">Home</a>
+						</li>
+						<li class="nav-item">
+							<a class="nav-link" accesskey="i" href="instructions.html">Instructions</a>
+						</li>
+					</ul>
+				</nav>
 				<p>Current Mark: <span>0</span>%</p>
 			</header>
 

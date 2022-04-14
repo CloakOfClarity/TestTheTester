@@ -32,3 +32,6 @@ header li > a	{
 		font-weight:400;
 		border-right: solid 1px #dedede;
 	}
+.passmark { color: green; }
+.dangermark { color: yellow; }
+.failmark { color: red; }

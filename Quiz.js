@@ -129,9 +129,15 @@ function validateCheck()
 	mark+=subMark;
 }
 
+function closeMessage()
+{
+	return "If you leave now, your progress will be lost.";
+}
+
 function completeQuiz()
 {
 	question=21;
+	$("body").attr("onbeforeunload","");
 	$("main").empty();
 	if(mark>=12)
 	{
